@@ -4,13 +4,13 @@
 /* Program with no main */
 
 #define FILE open("Grace_kid.c", O_CREAT | O_TRUNC | O_RDWR, 0664)
-#define OUTPUT "#include <stdio.h>%c#include <fcntl.h>%c#include <unistd.h>%c%c* Program with no main *%c%c%c#define FILE open(%cGrace_kid.c%c, O_CREAT | O_TRUNC | O_RDWR, 0664)%c#define OUTPUT %c%s%c%c#define START()%c%cint main() {%c%c%cint fd = FILE;%c%c%cif (fd < 0)%c%c%c%creturn -1;%c%c%cdprintf(fd,OUTPUT,10,10,10,47,47,10,10,34,34,10,34,OUTPUT,34,10,92,10,92,10,9,92,10,9,92,10,9,9,92,10,9,92,10,9,92,10,9,92,10,10,10,10);%c%c%cclose(fd);%c%c%creturn 0;%c%c}%c%cSTART()%c"
+#define OUTPUT "#include <stdio.h>%2$c#include <fcntl.h>%2$c#include <unistd.h>%2$c%4$c* Program with no main *%4$c%2$c%2$c#define FILE open(%3$cGrace_kid.c%3$c, O_CREAT | O_TRUNC | O_RDWR, 0664)%2$c#define OUTPUT %3$c%6$s%3$c%2$c#define START()%5$c%2$cint main() {%5$c%2$c%1$cint fd = FILE;%5$c%2$c%1$cif (fd < 0)%5$c%2$c%1$c%1$creturn -1;%5$c%2$c%1$cdprintf(fd,OUTPUT,9, 10, 34, 47, 92, OUTPUT);%5$c%2$c%1$cclose(fd);%5$c%2$c%1$creturn 0;%5$c%2$c}%2$c%2$cSTART()%2$c"
 #define START()\
 int main() {\
 	int fd = FILE;\
 	if (fd < 0)\
 		return -1;\
-	dprintf(fd,OUTPUT,10,10,10,47,47,10,10,34,34,10,34,OUTPUT,34,10,92,10,92,10,9,92,10,9,92,10,9,9,92,10,9,92,10,9,92,10,9,92,10,10,10,10);\
+	dprintf(fd,OUTPUT,9, 10, 34, 47, 92, OUTPUT);\
 	close(fd);\
 	return 0;\
 }
