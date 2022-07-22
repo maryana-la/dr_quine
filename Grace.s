@@ -22,6 +22,7 @@ main:
     ret
 error:
     mov rax, -1
+    pop rbp ; added later
     ret
 %endmacro
 
@@ -44,3 +45,5 @@ error:
 %endmacro
 
 FT ; launch program
+
+; todo add leave
