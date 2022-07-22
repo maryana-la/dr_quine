@@ -38,6 +38,7 @@ segment .data
 msg db "sdsdcsd", 0xa
 len equ $ - msg
 
+%2$c
 
 ;register mapping for system call invocation using int $0x80 - On both Linux x86 and Linux x86_64
 ;system call number	eax

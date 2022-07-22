@@ -1,88 +1,46 @@
 segment .data
 file db "Grace_kid.s", 0
-
-;%macro FT 0
-;
-;
-;
-;%endmacro
-
-
-%macro write_file 2
-	mov rdi, %1
-	mov rsi, %2
-	mov rdx, 9
-	mov rcx, 10
-	mov r8, 34
-	call dprintf
-%endmacro
-
-segment .text
-
-
-global main
-extern dprintf
-
-main:
-	push rbp
-	mov rbp, rsp
-
-	mov rdi, file ;prepare params for open
-	mov rsi, 578 ;open flags
-	mov rdx, 0664o ; open rights
-	mov rax, 2 ; sys_call number
-	syscall
-	cmp rax, byte 0	;	if rax == NULL
-	je  error		;	go to error section
-
-	mov [fd_out], rax
-
-	write_file [fd_out], msg
-
-	mov rdi, [fd_out]
-	mov rax, 3 ; close(fd)
-	syscall
-
-	pop rbp
-	ret
-
-error:
-	mov rax, -1			;	rax = -1
-	ret
-
-segment .data
-msg db "segment .data%1$cfile db %3$cGrace_kid.s%3$c, 0", 0
-
+msg db "segment .data%2$cfile db %3$cGrace_kid.s%3$c, 0%2$cmsg db %3$c%1$s%3$c, 0%2$csegment .bss%2$cfd_out resb 1%2$csegment .text%2$cglobal main%2$cextern dprintf%2$c%4$cmacro FT 0%2$cmain:%2$c    push rbp%2$c    mov rbp, rsp%2$c    open_file file%2$c    cmp rax, 0%2$c    je error%2$c    mov [fd_out], rax%2$c    write_file [fd_out], msg%2$c    mov rdi, [fd_out]%2$c    mov rax, 3%2$c    syscall%2$c    pop rbp%2$c    ret%2$cerror:%2$c    mov rax, -1%2$c    ret%2$c%4$cendmacro%2$c%2$c%4$cmacro open_file 1%2$c    mov rdi, %4$c1%2$c    mov rsi, 578%2$c    mov rdx, 0664o%2$c    mov rax, 2%2$c    syscall%2$c%4$cendmacro%2$c%2$c%4$cmacro write_file 2%2$c    mov rdi, %4$c1%2$c    mov rsi, %4$c2%2$c    mov rdx, %4$c2%2$c    mov rcx, 10%2$c    mov r8, 34%2$c    mov r9, 37%2$c    call dprintf%2$c%4$cendmacro%2$c%2$cFT ; launch program%2$c", 0
 segment .bss
 fd_out resb 1
+segment .text
+global main
+extern dprintf
+%macro FT 0
+main:
+    push rbp
+    mov rbp, rsp
+    open_file file
+    cmp rax, 0
+    je error
+    mov [fd_out], rax
+    write_file [fd_out], msg
+    mov rdi, [fd_out]
+    mov rax, 3
+    syscall
+    pop rbp
+    ret
+error:
+    mov rax, -1
+    ret
+%endmacro
 
-;
-;; Макрос с двумя параметрами, который реализует системный вызов sys_write
-;   %macro write_string 2
-;      mov   eax, 4
-;      mov   ebx, 1
-;      mov   ecx, %1
-;      mov   edx, %2
-;      int   80h
-;   %endmacro
-;
-;section	.text
-;   global main            ; объявляем для использования gcc
-;
-;main:                     ; сообщаем линкеру входную точку
-;   write_string msg1, len1
-;   write_string msg2, len2
-;   write_string msg3, len3
-;
-;   mov eax,1                ; номер системного вызова (sys_exit)
-;   int 0x80                 ; вызов ядра
-;
-;section	.data
-;msg1 db	'Hello, programmers!',0xA,0xD
-;len1 equ $ - msg1
-;
-;msg2 db 'Welcome to the world of,', 0xA,0xD
-;len2 equ $- msg2
-;
-;msg3 db 'Linux assembly programming! '
-;len3 equ $- msg3
+%macro open_file 1
+    mov rdi, %1
+    mov rsi, 578
+    mov rdx, 0664o
+    mov rax, 2
+    syscall
+%endmacro
+
+%macro write_file 2
+    mov rdi, %1
+    mov rsi, %2
+    mov rdx, %2
+    mov rcx, 10
+    mov r8, 34
+    mov r9, 37
+    call dprintf
+%endmacro
+
+FT ; launch program
