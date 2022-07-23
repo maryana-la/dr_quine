@@ -14,4 +14,5 @@ all:
 clean:
 	rm -rf Sully
 	rm -rf Sully.o
+	rm -rf Sully_4.s
 
