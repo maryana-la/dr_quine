@@ -1,116 +1,70 @@
+%define NUMBER 3
 segment .text
 global main
 extern sprintf
 extern dprintf
 extern system
-extern printf
-
 main:
-	push rbp
-	mov rbp, rsp
-	mov rax, 5
-	cmp rax, 0
-	je endprogram
-	dec rax
-
-	mov r12, rax
-
-;create string with file name
-	mov rdi, filename
-	mov	rsi, sully
-	mov rdx, r12
-	call sprintf
-
-; sout filename
-	mov rdi, 1
-	mov rsi, filename
-	mov rdx, 9
-	mov rax, 1
-	syscall
-
-	; test start
-	mov rdi, msg
-	mov rsi, msg
-    mov rdx, 10
-    mov rcx, 34
-    mov r8, r12
-    call printf
-;    ; test end
-;
+    push rbp
+    mov rbp, rsp
+    mov rax, NUMBER
+    cmp rax, 0
+    jle endprogram
+    dec rax
+    mov r12, rax
+; create string with file name
+    mov rdi, filename
+    mov	rsi, sully
+    mov rdx, r12
+    call sprintf
 ; create or open file
-	mov rdi, filename
-	mov rsi, 578
-	mov rdx, 0664o
-	mov rax, 2
-	syscall
-;
-;
-;
-	mov [fd_out], rax
-;
-; write file
-	mov rdi, [fd_out]
-	mov rsi, msg
+    mov rdi, filename
+    mov rsi, 0102o
+    mov rdx, 0666o
+    mov rax, 2
+    syscall
+    mov [fd_out], rax
+; write in file
+    mov rdi, [fd_out]
+    mov rsi, msg
     mov rdx, msg
     mov rcx, 10
     mov r8, 34
-;    pop r9
     mov r9, r12
     call dprintf
-;
-	call compile
-;	mov rdi, cmd_exec
-;	mov rsi, compileCMD
-;	mov rdx, r12
-;	call sprintf
-;
-;; sout cmd_exec
-;	mov rdi, 1
-;	mov rsi, cmd_exec
-;	mov rdx, 100
-;	mov rax, 1
-;	syscall
-;
-;	mov rdi, cmd_exec
-;	call system
-;
-
+; compile function
+    call compile
 ; close file
-	mov rdi, [fd_out]
-	mov rax, 3
-	syscall
-
+    mov rdi, [fd_out]
+    mov rax, 3
+    syscall
 ; end of program
-	pop rbp
-	mov rax, 0
-	ret
-
+    pop rbp
+    mov rax, 0
+    ret
 
 endprogram:
-	leave
-	ret
+    leave
+    ret
 
 compile:
-	push rbp
-	mov rbp, rsp
-	mov rdi, cmd_exec
-	mov rsi, compileCMD
-	mov rdx, r12
-	call sprintf
-
-	mov rdi, cmd_exec
-	call system
-	leave
-	ret
-
+    push rbp
+    mov rbp, rsp
+    mov rdi, cmd_exec
+    mov rsi, compileCMD
+    mov rdx, r12
+    call sprintf
+    mov rdi, cmd_exec
+    call system
+    leave
+    ret
 
 segment .bss
 fd_out resb 1
 cmd_exec resb 1024
 
-
 segment .data
 filename TIMES 10 DW 0
 compileCMD db "nasm -f elf64 Sully_%1$d.s -o Sully_%1$d.o; gcc Sully_%1$d.o -no-pie -o Sully_%1$d; ./Sully_%1$d", 0xa
 sully db "Sully_%d.s", 0
-msg db "%2$ccou-cou%3$cline2%3$csdcsdl%%1number%4$d   %1$s", 0
+msg db "%%define NUMBER %4$d%2$csegment .text%2$cglobal main%2$cextern sprintf%2$cextern dprintf%2$cextern system%2$cmain:%2$c    push rbp%2$c    mov rbp, rsp%2$c    mov rax, NUMBER%2$c    cmp rax, 0%2$c    jle endprogram%2$c    dec rax%2$c    mov r12, rax%2$c; create string with file name%2$c    mov rdi, filename%2$c    mov	rsi, sully%2$c    mov rdx, r12%2$c    call sprintf%2$c; create or open file%2$c    mov rdi, filename%2$c    mov rsi, 0102o%2$c    mov rdx, 0666o%2$c    mov rax, 2%2$c    syscall%2$c    mov [fd_out], rax%2$c; write in file%2$c    mov rdi, [fd_out]%2$c    mov rsi, msg%2$c    mov rdx, msg%2$c    mov rcx, 10%2$c    mov r8, 34%2$c    mov r9, r12%2$c    call dprintf%2$c; compile function%2$c    call compile%2$c; close file%2$c    mov rdi, [fd_out]%2$c    mov rax, 3%2$c    syscall%2$c; end of program%2$c    pop rbp%2$c    mov rax, 0%2$c    ret%2$c%2$cendprogram:%2$c    leave%2$c    ret%2$c%2$ccompile:%2$c    push rbp%2$c    mov rbp, rsp%2$c    mov rdi, cmd_exec%2$c    mov rsi, compileCMD%2$c    mov rdx, r12%2$c    call sprintf%2$c    mov rdi, cmd_exec%2$c    call system%2$c    leave%2$c    ret%2$c%2$csegment .bss%2$cfd_out resb 1%2$ccmd_exec resb 1024%2$c%2$csegment .data%2$cfilename TIMES 10 DW 0%2$ccompileCMD db %3$cnasm -f elf64 Sully_%%1$d.s -o Sully_%%1$d.o; gcc Sully_%%1$d.o -no-pie -o Sully_%%1$d; ./Sully_%%1$d%3$c, 0xa%2$csully db %3$cSully_%%d.s%3$c, 0%2$cmsg db %3$c%1$s%3$c, 0%2$c", 0
