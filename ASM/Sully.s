@@ -4,6 +4,14 @@ global main
 extern sprintf
 extern dprintf
 extern system
+;
+;%macro file_name 1
+;    mov rdi, filename
+;    mov	rsi, sully
+;    mov rdx, %1
+;    call sprintf
+;%endmacro
+
 main:
     push rbp
     mov rbp, rsp
@@ -58,6 +66,8 @@ compile:
     call system
     leave
     ret
+
+
 
 segment .bss
 fd_out resb 1
