@@ -8,11 +8,14 @@
 #
 
 
+#all:
+#	nasm -f elf64 Sully.s -o Sully.o; gcc Sully.o -no-pie -o Sully
+#
+#clean:
+#	rm -rf Sully
+#	rm -rf Sully.o
+#	rm -rf Sully_4.s
+#
+
 all:
-	nasm -f elf64 Sully.s -o Sully.o; gcc Sully.o -no-pie -o Sully
-
-clean:
-	rm -rf Sully
-	rm -rf Sully.o
-	rm -rf Sully_4.s
-
+	gcc ../C/Sully.c -o Sully
