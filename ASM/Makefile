@@ -24,7 +24,6 @@ $(SULLY): $(SULLY).s
 	$(COMP) $(SULLY).o -no-pie -o $(SULLY)
 
 test3:
-	make all
 	mkdir -p $(TEST_FOLD)
 	cp $(SULLY) $(TEST_FOLD); cd $(TEST_FOLD); ./$(SULLY)
 

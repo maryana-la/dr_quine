@@ -28,7 +28,6 @@ test2:
 	diff $(GRACE).c Grace_kid.c
 
 test3:
-	make all
 	mkdir -p $(TEST_FOLD)
 	cp $(SULLY) $(TEST_FOLD) ; cd $(TEST_FOLD) ; ./$(SULLY)
 
